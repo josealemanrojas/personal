@@ -1,0 +1,37 @@
+.list {
+  text-align: left;
+  max-width: 750px;
+  margin: auto;
+}
+
+.submit-form {
+  max-width: 300px;
+  margin: auto;
+}
+
+.edit-form {
+  max-width: 300px;
+  margin: auto;
+}
+
+.badge.badge-warning{
+  color: black;
+  background: yellowgreen;
+}
+
+.badge.badge-primary{
+  color: black;
+  background: blue;
+}
+
+.badge.badge-danger {
+  color: black;
+  background: red;
+  margin-left: 10px;
+}
+
+.badge.badge-success {
+  color: black;
+  margin-left: 10px;
+  background: green;
+}
