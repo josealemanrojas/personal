@@ -6,12 +6,12 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Repository
 public interface TutorialRepository
-  extends JpaRepository<TutorialEntity, UUID>, JpaSpecificationExecutor<TutorialEntity> {
-  List<TutorialEntity> findByPublished(boolean published);
-  List<TutorialEntity> findByTitleContaining(String title);
+        extends JpaRepository<TutorialEntity, UUID>, JpaSpecificationExecutor<TutorialEntity> {
+    List<TutorialEntity> findByPublished(boolean published);
+
+    List<TutorialEntity> findByTitleContaining(String title);
 }

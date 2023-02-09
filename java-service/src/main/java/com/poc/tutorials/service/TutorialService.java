@@ -1,5 +1,7 @@
 package com.poc.tutorials.service;
 
+import com.poc.tutorials.event.AuditPublisher;
+import com.poc.tutorials.model.ActionType;
 import com.poc.tutorials.model.TutorialEntity;
 import com.poc.tutorials.repository.TutorialRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,64 +14,78 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.Optional;
+import java.util.UUID;
 
 
 @Service
 @Transactional
 public class TutorialService {
 
-  @Autowired private TutorialRepository tutorialRepository;
+    @Autowired
+    private TutorialRepository tutorialRepository;
 
-  @CacheEvict(cacheNames = "tutorials", allEntries = true)
-  public TutorialEntity createTutorial(TutorialEntity tutorialEntity) {
-    return tutorialRepository.save(new TutorialEntity(tutorialEntity.getTitle(), tutorialEntity.getDescription(), tutorialEntity.isPublished()));
-  }
+    @Autowired
+    private AuditPublisher auditPublisher;
 
-  @CacheEvict(cacheNames = "tutorials", allEntries = true)
-  public TutorialEntity updateTutorialById(UUID tutorialId, TutorialEntity tutorialEntity) {
-    return tutorialRepository.save(tutorialEntity);
-  }
+    @CacheEvict(cacheNames = "tutorials", allEntries = true)
+    public TutorialEntity createTutorial(TutorialEntity tutorialEntity) {
+        TutorialEntity entity = tutorialRepository.save(
+                new TutorialEntity(tutorialEntity.getTitle(), tutorialEntity.getDescription(), tutorialEntity.isPublished()));
 
-  @Caching(evict = {@CacheEvict(cacheNames = "tutorials", allEntries = true) })
-  public void deleteTutorialById(UUID tutorialId) {
-    tutorialRepository.deleteById(tutorialId);
-  }
+        auditPublisher.publishCustomEvent(entity, ActionType.CREATED);
+        return entity;
+    }
 
-  public void deleteAllTutorials(TutorialEntity tutorialEntity) {
-    tutorialRepository.deleteAll();
-  }
+    @CacheEvict(cacheNames = "tutorials", allEntries = true)
+    public TutorialEntity updateTutorialById(UUID tutorialId, TutorialEntity tutorialEntity) {
+        TutorialEntity updatedEntity = tutorialRepository.save(tutorialEntity);
+        auditPublisher.publishCustomEvent(updatedEntity, ActionType.UPDATED);
 
-  public Optional<TutorialEntity>  getTutorialById(UUID tutorialId) {
-    return  tutorialRepository.findById(tutorialId);
-  }
+        return updatedEntity;
+    }
 
-  @Cacheable(value = "tutorials")
-  public List<TutorialEntity> getAllTutorialsByTitle(String title) {
+    @Caching(evict = {@CacheEvict(cacheNames = "tutorials", allEntries = true)})
+    public void deleteTutorialById(UUID tutorialId) {
+        TutorialEntity entityToDelete = tutorialRepository.findById(tutorialId).get();
+        auditPublisher.publishCustomEvent(entityToDelete, ActionType.DELETED);
 
-    List<TutorialEntity> tutorials = new ArrayList<TutorialEntity>();
+        tutorialRepository.deleteById(tutorialId);
+    }
 
-    if (title == null)
-      tutorialRepository.findAll().forEach(tutorials::add);
-    else
-      tutorialRepository.findByTitleContaining(title).forEach(tutorials::add);
+    public void deleteAllTutorials(TutorialEntity tutorialEntity) {
+        tutorialRepository.deleteAll();
+    }
 
-    return tutorials;
-  }
+    public Optional<TutorialEntity> getTutorialById(UUID tutorialId) {
+        return tutorialRepository.findById(tutorialId);
+    }
 
-  @CachePut(value="published", condition="#tutorialEntity.published==True")
-  //@CachePut(value="addresses", unless="#result.length()<64")
-  public List<TutorialEntity> getTutorialsPublished() {
-    return tutorialRepository.findByPublished(true);
-  }
+    @Cacheable(value = "tutorials")
+    public List<TutorialEntity> getAllTutorialsByTitle(String title) {
+
+        List<TutorialEntity> tutorials = new ArrayList<TutorialEntity>();
+
+        if (title == null)
+            tutorialRepository.findAll().forEach(tutorials::add);
+        else
+            tutorialRepository.findByTitleContaining(title).forEach(tutorials::add);
+
+        return tutorials;
+    }
+
+    @CachePut(value = "published", condition = "#tutorialEntity.published==True")
+    //@CachePut(value="addresses", unless="#result.length()<64")
+    public List<TutorialEntity> getTutorialsPublished() {
+        return tutorialRepository.findByPublished(true);
+    }
 
 
-  public void deleteTutorial(UUID id) {
-    tutorialRepository.deleteById(id);
-  }
+    public void deleteTutorial(UUID id) {
+        tutorialRepository.deleteById(id);
+    }
 
-  public void deleteAllTutorials() {
-    tutorialRepository.deleteAll();
-  }
+    public void deleteAllTutorials() {
+        tutorialRepository.deleteAll();
+    }
 }

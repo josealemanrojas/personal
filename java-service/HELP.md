@@ -1,6 +1,7 @@
 # Getting Started
 
 ### Reference Documentation
+
 For further reference, please consider the following sections:
 
 * [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)
@@ -14,6 +15,7 @@ For further reference, please consider the following sections:
 * [Spring for RabbitMQ](https://docs.spring.io/spring-boot/docs/2.7.8/reference/htmlsingle/#messaging.amqp)
 
 ### Guides
+
 The following guides illustrate how to use some features concretely:
 
 * [Building a Reactive RESTful Web Service](https://spring.io/guides/gs/reactive-rest-service/)

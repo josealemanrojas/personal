@@ -8,9 +8,9 @@ import org.springframework.cache.annotation.EnableCaching;
 @EnableCaching
 public class DemoApplication {
 
-	public static void main(String[] args) {
-		System.out.println("starting services");
-		SpringApplication.run(DemoApplication.class, args);
-	}
+    public static void main(String[] args) {
+        System.out.println("starting services");
+        SpringApplication.run(DemoApplication.class, args);
+    }
 
 }

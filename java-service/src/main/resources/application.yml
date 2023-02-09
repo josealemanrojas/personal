@@ -61,3 +61,12 @@ spring:
     redis:
       time-to-live: 30
       cache-null-values: false
+
+  data:
+    mongodb:
+      authentication-database: admin
+      username: ${MONGO_DB_USERNAME:test}
+      password: ${MONGO_DB_PASSWORD:test}
+      database: ${MONGO_INITDB_DATABASE:test_db}
+      port: ${PORT:27017}
+      host: ${MONGO_DB_HOST:localhost}
