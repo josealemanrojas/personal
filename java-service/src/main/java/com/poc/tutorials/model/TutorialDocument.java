@@ -8,6 +8,7 @@ import lombok.experimental.Accessors;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Document("TutorialDocument")
@@ -25,7 +26,6 @@ public class TutorialDocument {
     private String description;
     private boolean published;
     private ActionType actionType;
-
-
+    private LocalDateTime createdAt;
 }
 

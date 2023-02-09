@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+
 @Component
 @Slf4j
 public class AuditEventListener implements ApplicationListener<AuditEvent> {
@@ -25,6 +27,7 @@ public class AuditEventListener implements ApplicationListener<AuditEvent> {
                 .published(entity.isPublished())
                 .title(entity.getTitle())
                 .description(entity.getDescription())
+                .createdAt(LocalDateTime.now())
                 .tutorialId(entity.getId());
 
         tutorialDocumentRepository.save(document);
