@@ -39,6 +39,7 @@ public class TutorialService {
 
     @CacheEvict(cacheNames = "tutorials", allEntries = true)
     public TutorialEntity updateTutorialById(UUID tutorialId, TutorialEntity tutorialEntity) {
+        tutorialEntity.setId(tutorialId);
         TutorialEntity updatedEntity = tutorialRepository.save(tutorialEntity);
         auditPublisher.publishCustomEvent(updatedEntity, ActionType.UPDATED);
 
@@ -46,13 +47,14 @@ public class TutorialService {
     }
 
     @Caching(evict = {@CacheEvict(cacheNames = "tutorials", allEntries = true)})
-    public void deleteTutorialById(UUID tutorialId) {
-        tutorialRepository.findById(tutorialId)
-                .map( t ->  {
+    public boolean deleteTutorialById(UUID tutorialId) {
+        return tutorialRepository.findById(tutorialId)
+                .map(t -> {
                     auditPublisher.publishCustomEvent(t, ActionType.DELETED);
-                    return t;
+                    tutorialRepository.deleteById(tutorialId);
+                    return true;
                 })
-                .ifPresent( t ->  tutorialRepository.deleteById(tutorialId));
+                .orElseGet(() -> false);
     }
 
     public void deleteAllTutorials(TutorialEntity tutorialEntity) {

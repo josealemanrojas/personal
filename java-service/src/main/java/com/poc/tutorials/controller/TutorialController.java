@@ -39,8 +39,7 @@ public class TutorialController {
      */
     @DeleteMapping(value = "/{tutorialId}")
     public ResponseEntity<HttpStatus> deleteTutorial(@PathVariable("tutorialId") UUID tutorialId) {
-        tutorialService.deleteTutorialById(tutorialId);
-        return ResponseEntity.ok(HttpStatus.ACCEPTED);
+        return ResponseEntity.ok(tutorialService.deleteTutorialById(tutorialId) ? HttpStatus.ACCEPTED : HttpStatus.NOT_FOUND);
     }
 
     /**
