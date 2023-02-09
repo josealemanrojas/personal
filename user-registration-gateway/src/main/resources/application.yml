@@ -1,0 +1,37 @@
+config:
+  service:
+    name: user-registration-service
+    id: a8201b36-694d-4904-930b-fb79e4888888
+  swagger:
+    info:
+      title: User Registration Gateway
+      description: Interface for user registrations
+  cors:
+    allowedOrigins: http://localhost:8080
+
+spring:
+  sql:
+    init:
+      mode: always
+
+  rabbitmq:
+    host: ${SPRING_RABBITMQ_HOST:localhost}
+    port: ${SPRING_RABBITMQ_HOST:5627}
+    username: ${SPRING_RABBITMQ_USERNAME:guest}
+    password: ${SPRING_RABBITMQ_PASSWORD:guest}
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+  jackson:
+    serialization:
+      fail_on_empty_beans: false
+
+  main:
+    allow-circular-references: true
+    allow-bean-definition-overriding: true
+
+logging:
+  level:
+    ROOT: INFO
