@@ -14,11 +14,34 @@ spring:
     init:
       mode: always
 
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${POSTGRES_URL:jdbc:postgresql://localhost:5432/postgres}
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASSWORD:postgres}
+    hikari:
+      connection-init-sql: CREATE SCHEMA IF NOT EXISTS users
+
+  liquibase:
+    change-log: classpath:/changeLog.json
+    enabled: true
+    liquibase-schema: users
+    database-change-log-lock-table: DATABASECHANGELOGLOCK
+    database-change-log-table: DATABASECHANGELOG
+
   rabbitmq:
     host: ${SPRING_RABBITMQ_HOST:localhost}
     port: ${SPRING_RABBITMQ_HOST:5627}
     username: ${SPRING_RABBITMQ_USERNAME:guest}
     password: ${SPRING_RABBITMQ_PASSWORD:guest}
+    listener:
+      simple:
+        retry:
+          enabled: true
+          initial-interval: 3s
+          max-attempts: 3
+          max-interval: 5s
+          multiplier: 2
 
   jackson:
     serialization:

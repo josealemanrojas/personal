@@ -1,0 +1,19 @@
+{
+  "databaseChangeLog": [
+    {
+      "preConditions": [
+        {
+          "runningAs": {
+            "username": "postgres"
+          }
+        }
+      ]
+    },
+    {
+      "include": {
+        "file": "changesets/09022023-1300-001-create-user-registration-table.json",
+        "relativeToChangelogFile": true
+      }
+    }
+  ]
+}

@@ -19,6 +19,14 @@ spring:
     port: ${SPRING_RABBITMQ_HOST:5627}
     username: ${SPRING_RABBITMQ_USERNAME:guest}
     password: ${SPRING_RABBITMQ_PASSWORD:guest}
+    listener:
+      simple:
+        retry:
+          enabled: true
+          initial-interval: 3s
+          max-attempts: 3
+          max-interval: 5s
+          multiplier: 2
 
   mvc:
     pathmatch:

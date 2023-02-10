@@ -5,22 +5,46 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.UUID;
 
 @Builder
 @Getter
-@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@NoArgsConstructor
 @ToString
+@Table(schema = "users", name = "user_registration")
+@Entity
 public class UserRegistration implements Serializable {
+    @Column(name = "username")
     String username;
+    @Column(name = "email")
     String email;
+    @Column(name = "firstname")
     String firstname;
+    @Column(name = "lastname")
     String lastname;
+
+    @Id
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(
+            name = "id",
+            nullable = false,
+            insertable = false,
+            updatable = false,
+            columnDefinition = "UUID"
+    )
     UUID id;
 
     @JsonCreator

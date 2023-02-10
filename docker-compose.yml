@@ -30,6 +30,7 @@ services:
       - '~/.m2:/root/.m2'
     links:
       - cache
+
   postgres:
     image: postgres
     environment:
@@ -98,6 +99,7 @@ services:
       - SPRING_RABBITMQ_PASSWORD=guest
     depends_on:
       - rabbitmq
+      - postgres
     volumes:
       - './user-registration-gateway/src:/user-registration-gateway/src'
       - './user-registration-gateway/target:/user-registration-gateway/target'
@@ -118,9 +120,13 @@ services:
       - SPRING_RABBITMQ_PORT=5672
       - SPRING_RABBITMQ_USERNAME=guest
       - SPRING_RABBITMQ_PASSWORD=guest
+      - POSTGRES_URL=jdbc:postgresql://postgres:5432/postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
     depends_on:
       - rabbitmq
       - user-registration-gateway
+      - postgres
     volumes:
       - './user-registration-worker/src:/user-registration-worker/src'
       - './user-registration-worker/target:/user-registration-worker/target'

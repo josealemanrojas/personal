@@ -1,0 +1,92 @@
+{
+  "databaseChangeLog": [
+    {
+      "preConditions": {
+        "runningAs": {
+          "username": "postgres"
+        }
+      }
+    },
+    {
+      "changeSet": {
+        "id": "29012023-1300-001-create-tutorial-table",
+        "author": "andres.ramirez",
+        "comments": "User registration tables creation",
+        "changes": [
+          {
+            "sql": {
+              "comment": "Add uuid-ossp extension for poc schema",
+              "endDelimiter": ";",
+              "sql": "CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\""
+            }
+          },
+          {
+            "sql": {
+              "comment": "Add schema for java service",
+              "endDelimiter": ";",
+              "sql": "CREATE SCHEMA IF NOT EXISTS users"
+            }
+          },
+          {
+            "createTable": {
+              "schemaName": "users",
+              "tableName": "user_registration",
+              "comments": "Creating main user_registration table ",
+              "columns": [
+                {
+                  "column": {
+                    "name": "id",
+                    "type": "uuid",
+                    "defaultValueComputed": "uuid_generate_v4()",
+                    "constraints": {
+                      "primaryKey": true,
+                      "primaryKeyName": "pk_tutorial",
+                      "unique": true,
+                      "nullable": false
+                    }
+                  }
+                },
+                {
+                  "column": {
+                    "name": "username",
+                    "type": "varchar(100)",
+                    "constraints": {
+                      "nullable": false
+                    }
+                  }
+                },
+                {
+                  "column": {
+                    "name": "email",
+                    "type": "varchar(500)",
+                    "constraints": {
+                      "nullable": false
+                    }
+                  }
+                },
+                {
+                  "column": {
+                    "name": "firstname",
+                    "type": "varchar(100)",
+                    "constraints": {
+                      "nullable": false
+                    }
+                  }
+                },
+                {
+                  "column": {
+                    "name": "lastname",
+                    "type": "varchar(200)",
+                    "constraints": {
+                      "nullable": false
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
