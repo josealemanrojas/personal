@@ -42,6 +42,7 @@ public class RabbitMQConfig {
                 .build();
     }
     @Bean
+
     public Queue userRegistrationQueue() {
         log.info("Init user registration  queues");
         return  QueueBuilder.durable(USER_REGISTRATION_QUEUE)

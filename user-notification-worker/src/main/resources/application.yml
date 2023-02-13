@@ -1,11 +1,11 @@
 config:
   service:
-    name: user-registration-worker
+    name: user-notification-worker
     id: a8201b36-694d-4904-930b-fb79e4888888
   swagger:
     info:
-      title: User Registration Gateway
-      description: Interface for user registrations
+      title: User Notification Worker
+      description: Interface for user notifications
   cors:
     allowedOrigins: http://localhost:8080
 
@@ -20,28 +20,14 @@ spring:
     username: ${POSTGRES_USER:postgres}
     password: ${POSTGRES_PASSWORD:postgres}
     hikari:
-      connection-init-sql: CREATE SCHEMA IF NOT EXISTS users
+      connection-init-sql: CREATE SCHEMA IF NOT EXISTS notifications
 
   liquibase:
     change-log: classpath:/changeLog.json
     enabled: true
-    liquibase-schema: users
+    liquibase-schema: notifications
     database-change-log-lock-table: DATABASECHANGELOGLOCK
     database-change-log-table: DATABASECHANGELOG
-
-  rabbitmq:
-    host: ${SPRING_RABBITMQ_HOST:localhost}
-    port: ${SPRING_RABBITMQ_HOST:5627}
-    username: ${SPRING_RABBITMQ_USERNAME:guest}
-    password: ${SPRING_RABBITMQ_PASSWORD:guest}
-    listener:
-      simple:
-        retry:
-          enabled: true
-          initial-interval: 3s
-          max-attempts: 3
-          max-interval: 5s
-          multiplier: 1
 
   jackson:
     serialization:
@@ -52,10 +38,16 @@ spring:
     allow-bean-definition-overriding: true
 
   kafka:
-    producer:
+    consumer:
       bootstrap-servers: ${SPRING_KAFKA_CONSUMER_BOOTSTRAP_SERVERS:http://localhost:9092}
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: '*'
+
 
 logging:
   level:

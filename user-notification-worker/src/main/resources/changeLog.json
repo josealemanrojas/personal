@@ -1,0 +1,19 @@
+{
+  "databaseChangeLog": [
+    {
+      "preConditions": [
+        {
+          "runningAs": {
+            "username": "postgres"
+          }
+        }
+      ]
+    },
+    {
+      "include": {
+        "file": "changesets/20022023-1300-001-create-user-notification-table.json",
+        "relativeToChangelogFile": true
+      }
+    }
+  ]
+}

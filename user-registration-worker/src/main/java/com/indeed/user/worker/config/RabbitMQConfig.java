@@ -38,13 +38,14 @@ public class RabbitMQConfig {
     @Bean
     public Queue userRegistrationDeadLetterQueue() {
         log.info("Init user registration dl queues");
-        return  QueueBuilder.durable(DEAD_LETTER_USER_REGISTRATION_QUEUE)
+        return QueueBuilder.durable(DEAD_LETTER_USER_REGISTRATION_QUEUE)
                 .build();
     }
+
     @Bean
     public Queue userRegistrationQueue() {
         log.info("Init user registration  queues");
-        return  QueueBuilder.durable(USER_REGISTRATION_QUEUE)
+        return QueueBuilder.durable(USER_REGISTRATION_QUEUE)
                 .withArgument("x-dead-letter-exchange", DEAD_LETTER_EXCHANGE)
                 .withArgument("x-dead-letter-routing-key", DEAD_LETTER_ROUTING_KEY)
                 .build();
