@@ -31,6 +31,28 @@ services:
     links:
       - cache
 
+  post-service:
+    container_name: post-service
+    image: local-post-service
+    build:
+      context: ./post-service
+      dockerfile: Dockerfile
+    ports:
+      - "8086:8080"
+      - "5568:5568"
+    environment:
+      - POSTGRES_URL=jdbc:postgresql://postgres:5432/postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    depends_on:
+      - postgres
+    volumes:
+      - './post-service/src:/post-service/src'
+      - './post-service/target:/post-service/target'
+      - './post-service/pom.xml:/post-service/pom.xml'
+      - './post-service/mvnw:/post-service/mvnw'
+      - '~/.m2:/root/.m2'
+
   postgres:
     image: postgres
     environment:

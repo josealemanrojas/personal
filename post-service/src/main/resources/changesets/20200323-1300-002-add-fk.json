@@ -1,0 +1,36 @@
+{
+  "databaseChangeLog": [
+    {
+      "preConditions": {
+        "runningAs": {
+          "username": "postgres"
+        }
+      }
+    },
+    {
+      "changeSet": {
+        "id": "29012023-1300-002-add-fk",
+        "author": "andres.ramirez",
+        "comments": "Adding fk",
+        "changes": [
+          {
+            "addForeignKeyConstraint": {
+              "baseColumnNames": "author_id",
+              "baseTableSchemaName":  "post",
+              "baseTableName": "post",
+              "constraintName": "fk_post_author",
+              "deferrable": true,
+              "initiallyDeferred": true,
+              "onDelete": "CASCADE",
+              "onUpdate": "CASCADE",
+              "referencedColumnNames": "id",
+              "referencedTableName": "author",
+              "referencedTableSchemaName":  "post",
+              "validate": true
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

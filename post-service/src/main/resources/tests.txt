@@ -1,0 +1,27 @@
+
+IDE
+http://localhost:8086/graphiql?path=/graphql
+
+QUERY
+{ recentPosts(count: 2, offset: 0) {
+  id,
+  author {
+    id,
+    name
+  }
+} }
+
+
+MUTATION
+mutation{
+  createPost(title: "Test",
+    authorId: "420d29b8-5b91-47c9-8960-9f7785ab9521",
+  	text: "Any Text" ){
+    	id
+    	title
+    	author {
+        id,
+        name
+      }
+  }
+}

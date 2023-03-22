@@ -1,0 +1,52 @@
+config:
+  service:
+    name: user-notification-worker
+    id: a8201b36-694d-4904-930b-fb79e4888888
+  swagger:
+    info:
+      title: User Notification Worker
+      description: Interface for user notifications
+  cors:
+    allowedOrigins: http://localhost:8080
+
+spring:
+  sql:
+    init:
+      mode: always
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${POSTGRES_URL:jdbc:postgresql://localhost:5432/postgres}
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASSWORD:postgres}
+    hikari:
+      connection-init-sql: CREATE SCHEMA IF NOT EXISTS post
+
+  liquibase:
+    change-log: classpath:/changeLog.json
+    enabled: true
+    liquibase-schema: post
+    database-change-log-lock-table: DATABASECHANGELOGLOCK
+    database-change-log-table: DATABASECHANGELOG
+
+  jackson:
+    serialization:
+      fail_on_empty_beans: false
+
+  main:
+    allow-circular-references: true
+    allow-bean-definition-overriding: true
+
+  graphql:
+    graphiql:
+      enabled: true
+
+logging:
+  level:
+    ROOT: INFO
+
+
+auto:
+  create:
+    topics:
+      enable: true
