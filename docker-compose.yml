@@ -31,6 +31,27 @@ services:
     links:
       - cache
 
+  kotlin-service:
+    container_name: kotlin-service
+    image: local-kotlin-service
+    build:
+      context: ./kotlin-service
+      dockerfile: Dockerfile
+    ports:
+      - "8089:8080"
+    environment:
+      - POSTGRES_URL=jdbc:postgresql://postgres:5432/postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    depends_on:
+      - postgres
+    volumes:
+      - './kotlin-service/src:/kotlin-service/src'
+      - './kotlin-service/target:/kotlin-service/target'
+      - './kotlin-service/pom.xml:/kotlin-service/pom.xml'
+      - './kotlin-service/mvnw:/kotlin-service/mvnw'
+      - '~/.m2:/root/.m2'
+
   post-service:
     container_name: post-service
     image: local-post-service

@@ -1,0 +1,47 @@
+config:
+  service:
+    name: kotlin-service
+    id: e2fb8051-c9a3-403d-bb0a-80564104b4d7
+  swagger:
+    info:
+      title: Tutorial
+      description: Interface to get tutorial configurations
+  cors:
+    allowedOrigins: http://localhost:8080
+
+spring:
+  sql:
+    init:
+      mode: always
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${POSTGRES_URL:jdbc:postgresql://localhost:5432/postgres}
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASSWORD:postgres}
+    hikari:
+      connection-init-sql: CREATE SCHEMA IF NOT EXISTS tutorials
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+  jackson:
+    serialization:
+      fail_on_empty_beans: false
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+  liquibase:
+    change-log: classpath:/changeLog.json
+    enabled: true
+    liquibase-schema: tutorials
+    database-change-log-lock-table: DATABASECHANGELOGLOCK
+    database-change-log-table: DATABASECHANGELOG
+
+  main:
+    allow-circular-references: true
+    allow-bean-definition-overriding: true

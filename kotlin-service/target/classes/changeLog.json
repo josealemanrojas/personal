@@ -1,0 +1,19 @@
+{
+  "databaseChangeLog": [
+    {
+      "preConditions": [
+        {
+          "runningAs": {
+            "username": "postgres"
+          }
+        }
+      ]
+    },
+    {
+      "include": {
+        "file": "changesets/29012023-1300-001-create-tutorial-table.json",
+        "relativeToChangelogFile": true
+      }
+    }
+  ]
+}
